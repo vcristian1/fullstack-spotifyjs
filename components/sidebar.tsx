@@ -59,7 +59,7 @@ const Sidebar = () => {
       paddingX="5px"
       color="gray"
     >
-      <Box paddingY="20px">
+      <Box paddingY="20px" height="100%">
         <Box width="120px" marginBottom="20px" paddingX="20px">
           <NextImage src="/logo.svg" height={60} width={120} />
         </Box>
@@ -105,6 +105,11 @@ const Sidebar = () => {
           </List>
         </Box>
         <Divider color="gray.800" />
+        <Box height="66%" overflowY="auto" paddingY="20px">
+          {new Array(50).fill(1).map(() => (
+            <h1>Playlist</h1>
+          ))}
+        </Box>
       </Box>
     </Box>
   )
