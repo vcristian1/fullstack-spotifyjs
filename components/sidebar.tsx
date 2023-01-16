@@ -104,6 +104,7 @@ const Sidebar = () => {
             ))}
           </List>
         </Box>
+        <Divider color="gray.800" />
       </Box>
     </Box>
   )
