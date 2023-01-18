@@ -4,6 +4,7 @@ import { artistsData } from './songsData'
 
 const prisma = new PrismaClient()
 
+// The run function only is executed when we run the seed file.
 const run = async () => {
   await Promise.all(
     artistsData.map(async (artist) => {
