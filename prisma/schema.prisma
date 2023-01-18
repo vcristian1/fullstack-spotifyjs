@@ -30,6 +30,8 @@ model Song {
   artist    Artist   @relation(fields: [artistId], references: [id])
   artistId  Int
   playlists Playlist[]
+  duration  Int
+  url       String
 }
 
 model Artist {
@@ -46,6 +48,8 @@ model Playlist {
   updatedAt DateTime @updatedAt
   name      String   
   songs     Song[]
-  user      User?    @relation(fields: [userId], references: [id])
-  userId    Int?
+  user      User     @relation(fields: [userId], references: [id])
+  userId    Int
 }
+
+//If it is a one to one relation you need the question mark after.
