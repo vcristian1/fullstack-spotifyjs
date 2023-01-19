@@ -21,7 +21,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   } catch (err) {
     res.status(401)
     res.json({ error: 'User already exists' })
-    console.log(err.message)
     return
   }
 
@@ -37,7 +36,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   res.setHeader(
     'Set-Cookie',
-    cookie.serialize('TRAX_ACCESS_TOKEN', token, {
+    cookie.serialize('SPOTIFYJS_ACCESS_TOKEN', token, {
       httpOnly: true,
       maxAge: 8 * 60 * 60,
       path: '/',
