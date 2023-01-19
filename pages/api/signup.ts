@@ -10,7 +10,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { email, password } = req.body
 
   let user
-
+  // This try/catch is not working, e.message says invalid invocation of create. he 'User already exists!' error is received each time a post request is sent
   try {
     user = await prisma.user.create({
       data: {
@@ -18,12 +18,13 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         password: bcrypt.hashSync(password, salt),
       },
     })
-  } catch (e) {
+  } catch (err) {
     res.status(401)
     res.json({ error: 'User already exists' })
+    console.log(err.message)
     return
   }
-  // What object do you want to hash
+
   const token = jwt.sign(
     {
       email: user.email,
@@ -31,15 +32,15 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       time: Date.now(),
     },
     'hello',
-    { expiresIn: '8hr' }
+    { expiresIn: '8h' }
   )
+
   res.setHeader(
     'Set-Cookie',
-    cookie.serialize('SPOTIFYJS_ACCESS_TOKEN', token, {
+    cookie.serialize('TRAX_ACCESS_TOKEN', token, {
       httpOnly: true,
       maxAge: 8 * 60 * 60,
       path: '/',
-      // will allow the user to maintain a logged in status while arriving from an external link.
       sameSite: 'lax',
       secure: process.env.NODE_ENV === 'production',
     })

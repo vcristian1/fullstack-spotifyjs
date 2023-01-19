@@ -5,12 +5,15 @@ import { artistsData } from './songsData'
 const prisma = new PrismaClient()
 
 // The run function only is executed when we run the seed file.
+// Upsert means create or update, if it exists update it but if it doesnt exist create it.
+// Queries, you need to have a unique property to query to use upsert
+// Logic to create a user, but first encrpyt.
+// We use the syntax on lines 49-51 instead of userId: user.id to ensure prisma connects the user with this id to the user on this playlist
+
 const run = async () => {
   await Promise.all(
     artistsData.map(async (artist) => {
-      // upsert means create or update, if it exists update it but if it doesnt exist create it.
       return prisma.artist.upsert({
-        // Queries
         where: { name: artist.name },
         update: {},
         create: {
@@ -26,10 +29,9 @@ const run = async () => {
       })
     })
   )
-  // Logic to create a user, but first we encrpyt.
+
   const salt = bcrypt.genSaltSync()
   const user = await prisma.user.upsert({
-    // Queries, you need to have a unique property to query to use upsert
     where: { email: 'user@test.com' },
     update: {},
     create: {
@@ -44,7 +46,6 @@ const run = async () => {
       return prisma.playlist.create({
         data: {
           name: `Playlist #${i + 1}`,
-          // We use the below syntax instead of userId: user.id to ensure prisma connects the user with this id to the user on this playlist
           user: {
             connect: { id: user.id },
           },
@@ -61,7 +62,7 @@ const run = async () => {
 
 run()
   .catch((e) => {
-    console.log(e)
+    console.error(e)
     process.exit(1)
   })
   .finally(async () => {
