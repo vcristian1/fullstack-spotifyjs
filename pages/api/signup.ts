@@ -1,6 +1,5 @@
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
-// Importing to help with the JWT to track you as far as authentication goes.
 import cookie from 'cookie'
 import { NextApiRequest, NextApiResponse } from 'next'
 import prisma from '../../lib/prisma'
@@ -10,7 +9,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { email, password } = req.body
 
   let user
-  // This try/catch is not working, e.message says invalid invocation of create. he 'User already exists!' error is received each time a post request is sent
+
   try {
     user = await prisma.user.create({
       data: {
@@ -18,7 +17,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         password: bcrypt.hashSync(password, salt),
       },
     })
-  } catch (err) {
+  } catch (e) {
     res.status(401)
     res.json({ error: 'User already exists' })
     return
@@ -36,7 +35,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   res.setHeader(
     'Set-Cookie',
-    cookie.serialize('SPOTIFYJS_ACCESS_TOKEN', token, {
+    cookie.serialize('TRAX_ACCESS_TOKEN', token, {
       httpOnly: true,
       maxAge: 8 * 60 * 60,
       path: '/',

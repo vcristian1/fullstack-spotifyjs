@@ -12,7 +12,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       email,
     },
   })
-  // compares the unhashed user password and hashed user password
+
   if (user && bcrypt.compareSync(password, user.password)) {
     const token = jwt.sign(
       {
@@ -22,13 +22,13 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       },
       'hello',
       {
-        expiresIn: '8hr',
+        expiresIn: '8h',
       }
     )
 
     res.setHeader(
       'Set-Cookie',
-      cookie.serialize('SPOTIFYJS_ACCESS_TOKEN', token, {
+      cookie.serialize('TRAX_ACCESS_TOKEN', token, {
         httpOnly: true,
         maxAge: 8 * 60 * 60,
         path: '/',
@@ -40,6 +40,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     res.json(user)
   } else {
     res.status(401)
-    res.json({ error: 'Email or Password is incorrect.' })
+    res.json({ error: 'Email or Password is wrong' })
   }
 }
