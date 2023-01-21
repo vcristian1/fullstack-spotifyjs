@@ -3,10 +3,10 @@ import { useRouter } from 'next/router'
 import { FC, useState } from 'react'
 import NextImage from 'next/image'
 // Stale While Revalidate from Vercel and Next.js: handles data fetching, caching, optimization updates, refetching and revalidating the cache for you.
-// import { useSWRConfig } from 'swr'
+import { useSWRConfig } from 'swr'
 import { auth } from '../lib/mutations'
 
-const SignInForm: FC<{ mode: 'signin' | 'signup' }> = ({ mode }) => {
+const AuthForm: FC<{ mode: 'signin' | 'signup' }> = ({ mode }) => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [isLoading, setIsLoading] = useState(false)
@@ -63,4 +63,4 @@ const SignInForm: FC<{ mode: 'signin' | 'signup' }> = ({ mode }) => {
   )
 }
 
-export default SignInForm
+export default AuthForm
